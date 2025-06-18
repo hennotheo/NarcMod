@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 import java.util.function.Function;
 
 public class ModBlocks {
-    public static final Block CONDENSED_DIRT = register(
+    public static final Block COMPUTER = register(
             "computer",
             Block::new,
             AbstractBlock.Settings.create().sounds(BlockSoundGroup.GRASS),

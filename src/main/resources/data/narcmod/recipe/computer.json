@@ -1,19 +1,16 @@
 {
   "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:gold_ingot"
+  },
   "pattern": [
     "III",
     "IGI",
     "III"
   ],
-  "key": {
-    "I": {
-      "item": "minecraft:iron_ingot"
-    },
-    "G": {
-      "item": "minecraft:gold_ingot"
-    }
-  },
   "result": {
-    "item": "narcmod:computer"
+    "count": 1,
+    "id": "narcmod:computer"
   }
 }

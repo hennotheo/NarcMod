@@ -22,6 +22,7 @@ public class NarcMod implements ModInitializer {
         // Proceed with mild caution.
         com.theohenno.narcmod.items.ModItems.initialize();
         com.theohenno.narcmod.blocks.ModBlocks.initialize();
+        com.theohenno.narcmod.entities.ModEntities.initialize();
 
         LOGGER.info("Hello Fabric world!");
     }
