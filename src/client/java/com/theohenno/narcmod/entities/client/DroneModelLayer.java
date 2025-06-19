@@ -7,7 +7,7 @@ import net.minecraft.util.Identifier;
 
 import java.util.Set;
 
-public class MissileModelLayer {
+public class DroneModelLayer {
     private static final Set<EntityModelLayer> LAYERS = Sets.newHashSet();
     public static final EntityModelLayer MISSILE = registerMain("missile");
 

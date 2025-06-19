@@ -1,6 +1,6 @@
 package com.theohenno.narcmod;
 
-import com.theohenno.narcmod.entities.client.MissileEntityClient;
+import com.theohenno.narcmod.entities.client.DroneEntityClient;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -9,6 +9,6 @@ import net.fabricmc.api.Environment;
 public class NarcModClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
-		MissileEntityClient.initialize();
+		DroneEntityClient.initialize();
 	}
 }

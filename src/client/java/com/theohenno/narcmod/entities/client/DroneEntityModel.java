@@ -1,19 +1,15 @@
 package com.theohenno.narcmod.entities.client;
 
-import com.theohenno.narcmod.entities.MissileEntity;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
-import net.minecraft.client.render.entity.state.EntityRenderState;
-import net.minecraft.client.util.math.MatrixStack;
 
 @Environment(EnvType.CLIENT)
-public class MissileEntityModel extends EntityModel<MissileEntityRenderState> {
+public class DroneEntityModel extends EntityModel<DroneEntityRenderState> {
 //    private final ModelPart base;
 
-    public MissileEntityModel(ModelPart root) {
+    public DroneEntityModel(ModelPart root) {
         super(root);
 //        this.textureHeight = 64;
 //        this.textureWidth = 64;

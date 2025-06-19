@@ -4,8 +4,8 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.world.World;
 
-public class MissileEntity extends MobEntity {
-    public MissileEntity(EntityType<? extends MobEntity> entityType, World world) {
+public class DroneEntity extends MobEntity {
+    public DroneEntity(EntityType<? extends MobEntity> entityType, World world) {
         super(entityType, world);
     }
 }
