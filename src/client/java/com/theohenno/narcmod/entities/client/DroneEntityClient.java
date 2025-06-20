@@ -11,11 +11,11 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DroneEntityClient {
-    public static final EntityModelLayer MODEL_MISSILE_LAYER = new EntityModelLayer(
-            Identifier.of(NarcMod.MOD_ID, "missile"), "main");
+    public static final EntityModelLayer MODEL_DRONE_LAYER = new EntityModelLayer(
+            Identifier.of(NarcMod.MOD_ID, "drone"), "main");
 
     public static void initialize() {
-        EntityModelLayerRegistry.registerModelLayer(MODEL_MISSILE_LAYER, DroneEntityModel::getTexturedModelData);
+        EntityModelLayerRegistry.registerModelLayer(MODEL_DRONE_LAYER, DroneEntityModel::getTexturedModelData);
         EntityRendererRegistry.register(ModEntities.MISSILE, DroneEntityRenderer::new);
     }
 }

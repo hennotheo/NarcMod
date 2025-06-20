@@ -11,12 +11,12 @@ import net.minecraft.util.Identifier;
 @Environment(EnvType.CLIENT)
 public class DroneEntityRenderer extends MobEntityRenderer<DroneEntity, DroneEntityRenderState, DroneEntityModel> {
     public DroneEntityRenderer(EntityRendererFactory.Context context) {
-        super(context, new DroneEntityModel(context.getPart(DroneModelLayer.MISSILE)), 0.5f);
+        super(context, new DroneEntityModel(context.getPart(DroneModelLayer.DRONE)), 0.5f);
     }
 
     @Override
     public Identifier getTexture(DroneEntityRenderState state) {
-        return Identifier.of(NarcMod.MOD_ID, "textures/entity/missile/missile.png");
+        return Identifier.of(NarcMod.MOD_ID, "textures/entity/drone/drone.png");
     }
 
     @Override
