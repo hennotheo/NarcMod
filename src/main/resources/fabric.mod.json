@@ -15,6 +15,9 @@
 	"icon": "assets/narcmod/icon.png",
 	"environment": "*",
 	"entrypoints": {
+		"fabric-datagen": [
+			"com.theohenno.narcmod.DataGenerator"
+		],
 		"main": [
 			"com.theohenno.narcmod.NarcMod"
 		],
