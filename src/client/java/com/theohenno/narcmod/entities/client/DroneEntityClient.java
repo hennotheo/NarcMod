@@ -16,6 +16,6 @@ public class DroneEntityClient {
 
     public static void initialize() {
         EntityModelLayerRegistry.registerModelLayer(MODEL_DRONE_LAYER, DroneEntityModel::getTexturedModelData);
-        EntityRendererRegistry.register(ModEntities.MISSILE, DroneEntityRenderer::new);
+        EntityRendererRegistry.register(ModEntities.DRONE, DroneEntityRenderer::new);
     }
 }

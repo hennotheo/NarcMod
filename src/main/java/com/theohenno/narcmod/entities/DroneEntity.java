@@ -1,6 +1,8 @@
 package com.theohenno.narcmod.entities;
 
+import com.mojang.authlib.minecraft.client.MinecraftClient;
 import com.theohenno.narcmod.NarcMod;
+import net.minecraft.block.entity.ShulkerBoxBlockEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.ai.goal.*;
@@ -16,9 +18,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -54,6 +58,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner {
 
         if (!getWorld().isClient) {
             player.sendMessage(Text.literal("🚀 Clic droit capturé dans AIBotEntity !"), true);
+            inventory.addStack(new ItemStack(Items.GOLD_INGOT));
         }
 
         return ActionResult.SUCCESS;
