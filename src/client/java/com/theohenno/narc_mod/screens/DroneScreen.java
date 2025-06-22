@@ -1,5 +1,6 @@
 package com.theohenno.narc_mod.screens;
 
+import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -12,7 +13,7 @@ import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
 public class DroneScreen extends HandledScreen<DroneScreenHandler> {
-    private static final Identifier TEXTURE = Identifier.ofVanilla("textures/gui/container/chest.png");
+    private static final Identifier TEXTURE = Identifier.of(NarcMod.MOD_ID, "textures/gui/drone.png");
 
     public DroneScreen(DroneScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -23,6 +24,6 @@ public class DroneScreen extends HandledScreen<DroneScreenHandler> {
     protected void drawBackground(DrawContext context, float deltaTicks, int mouseX, int mouseY) {
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 256);
+        context.drawTexture(RenderLayer::getGuiTextured, TEXTURE, i, j, 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 176, 166);
     }
 }

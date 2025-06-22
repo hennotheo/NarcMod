@@ -23,11 +23,12 @@ public class DroneScreenHandler extends ScreenHandler {
         this.inventory = droneInventory;
         droneInventory.onOpen(playerInventory.player);
 
-        for (int j = 0; j < 3; ++j) {
-            for (int i = 0; i < 9; ++i) {
-                this.addSlot(new Slot(droneInventory, i + j * 9, 8 + i * 18, 18 + j * 18));
-            }
-        }
+        this.addSlot(new Slot(droneInventory, 0, 152, 8));
+//        for (int j = 0; j < 3; ++j) {
+//            for (int i = 0; i < 9; ++i) {
+//                this.addSlot(new Slot(droneInventory, i + j * 9, 8 + i * 18, 18 + j * 18));
+//            }
+//        }
 
         int left = 8;
         int top = 84;
