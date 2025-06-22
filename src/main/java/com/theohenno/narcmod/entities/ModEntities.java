@@ -8,6 +8,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 
 public class ModEntities {
@@ -19,7 +21,10 @@ public class ModEntities {
                     .build(RegistryKey.of(RegistryKeys.ENTITY_TYPE, Identifier.of(NarcMod.MOD_ID, "missile")))
     );
 
+    public static final ScreenHandlerType<DroneScreenHandler> DRONE_SCREEN_HANDLER = new ScreenHandlerType<>(DroneScreenHandler::new, FeatureFlags.VANILLA_FEATURES);
+
     public static void initialize() {
         FabricDefaultAttributeRegistry.register(DRONE, DroneEntity.createDroneAttributes());
+        Registry.register(Registries.SCREEN_HANDLER, Identifier.of(NarcMod.MOD_ID, "narc_mod_screen"), DRONE_SCREEN_HANDLER);
     }
 }

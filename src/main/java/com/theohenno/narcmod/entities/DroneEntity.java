@@ -15,6 +15,7 @@ import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.passive.HorseEntity;
 import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
@@ -22,6 +23,7 @@ import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.registry.RegistryWrapper;
+import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -32,9 +34,10 @@ import net.minecraft.util.math.Vec3i;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.village.VillagerData;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
-public class DroneEntity extends PathAwareEntity implements InventoryOwner {
-    private final SimpleInventory inventory = new SimpleInventory(8);
+public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory {
+    private final SimpleInventory inventory = new SimpleInventory(27);
 
     public DroneEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
         super(entityType, world);
@@ -57,8 +60,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner {
         }
 
         if (!getWorld().isClient) {
-            player.sendMessage(Text.literal("🚀 Clic droit capturé dans AIBotEntity !"), true);
-            inventory.addStack(new ItemStack(Items.GOLD_INGOT));
+            player.openHandledScreen(this);
         }
 
         return ActionResult.SUCCESS;
@@ -93,5 +95,10 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner {
         super.readCustomDataFromNbt(nbt);
 //        this.offers = (TradeOfferList)nbt.get("Offers", TradeOfferList.CODEC, this.getRegistryManager().getOps(NbtOps.INSTANCE)).orElse((Object)null);
         this.readInventory(nbt, this.getRegistryManager());
+    }
+
+    @Override
+    public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
+        return new DroneScreenHandler(syncId, playerInventory, this.inventory);
     }
 }
