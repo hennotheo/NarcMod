@@ -3,5 +3,6 @@
   "item.narc_mod.computer": "Computer Block",
   "item.narc_mod.suspicious_substance": "Suspicious Substance",
   "itemGroup.narc_mod": "NarcMod",
-  "entity.narc_mod.drone": "Drone"
+  "entity.narc_mod.drone": "Drone",
+  "item.narc_mod.drone": "Drone"
 }

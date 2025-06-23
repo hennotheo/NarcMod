@@ -24,22 +24,8 @@ public class DroneScreenHandler extends ScreenHandler {
         droneInventory.onOpen(playerInventory.player);
 
         this.addSlot(new Slot(droneInventory, 0, 152, 8));
-//        for (int j = 0; j < 3; ++j) {
-//            for (int i = 0; i < 9; ++i) {
-//                this.addSlot(new Slot(droneInventory, i + j * 9, 8 + i * 18, 18 + j * 18));
-//            }
-//        }
 
-        int left = 8;
-        int top = 84;
-        for (int i = 0; i < 3; ++i) {
-            for (int j = 0; j < 9; ++j) {
-                this.addSlot(new Slot(playerInventory, j + (i + 1) * 9, left + j * 18, top + i * 18));
-            }
-        }
-        for (int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, left + i * 18, top + 58));
-        }
+        this.addPlayerSlots(playerInventory, 8, 84);
     }
 
     public boolean canUse(PlayerEntity player) {

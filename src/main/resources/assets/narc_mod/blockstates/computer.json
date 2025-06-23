@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "narcmod:block/computer"
+      "model": "narc_mod:block/computer"
     }
   }
 }

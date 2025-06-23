@@ -1,6 +1,7 @@
 package com.theohenno.narc_mod.blocks;
 
 import com.theohenno.narc_mod.NarcMod;
+import com.theohenno.narc_mod.blocks.entities.ModBlockEntities;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
@@ -17,12 +18,14 @@ import java.util.function.Function;
 public class ModBlocks {
     public static final Block COMPUTER = register(
             "computer",
-            Block::new,
-            AbstractBlock.Settings.create().sounds(BlockSoundGroup.GRASS),
+            Computer::new,
+            AbstractBlock.Settings.create().sounds(BlockSoundGroup.METAL),
             true
     );
 
-    public static void initialize() {}
+    public static void initialize() {
+        ModBlockEntities.initialize();
+    }
 
     private static Block register(String name, Function<AbstractBlock.Settings, Block> blockFactory, AbstractBlock.Settings settings, boolean shouldRegisterItem) {
         // Create a registry key for the block
