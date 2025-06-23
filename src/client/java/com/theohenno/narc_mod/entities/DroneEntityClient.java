@@ -1,7 +1,6 @@
-package com.theohenno.narc_mod.entities.client;
+package com.theohenno.narc_mod.entities;
 
 import com.theohenno.narc_mod.NarcMod;
-import com.theohenno.narc_mod.entities.ModEntities;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;

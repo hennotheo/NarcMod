@@ -54,4 +54,8 @@ public class ModBlocks {
     private static RegistryKey<Item> keyOfItem(String name) {
         return RegistryKey.of(RegistryKeys.ITEM, Identifier.of(NarcMod.MOD_ID, name));
     }
+
+    private ModBlocks() {
+        // Private constructor to prevent instantiation
+    }
 }

@@ -40,7 +40,7 @@ public class Computer extends BlockWithEntity {
             return result;
         }
 
-        if (!(world.getBlockEntity(pos) instanceof ComputerBlockEntity counterBlockEntity)) {
+        if (!(world.getBlockEntity(pos) instanceof ComputerBlockEntity computerBlockEntity)) {
             return result;
         }
 
@@ -48,7 +48,6 @@ public class Computer extends BlockWithEntity {
         world.getEntitiesByClass(DroneEntity.class, Box.from(Vec3d.of(pos)).expand(20), entity -> true)
                 .forEach(entity -> {
                     if (entity instanceof DroneEntity computer) {
-//                    computer.onUse(player);
                         NarcMod.LOGGER.info("Drone found: {}", computer.getUuid());
                     }
                 });

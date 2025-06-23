@@ -1,4 +1,4 @@
-package com.theohenno.narc_mod.entities.client;
+package com.theohenno.narc_mod.entities;
 
 import com.google.common.collect.Sets;
 import com.theohenno.narc_mod.NarcMod;
@@ -18,7 +18,7 @@ public class DroneModelLayer {
     private static EntityModelLayer register(String name, String layer) {
         EntityModelLayer entityModelLayer = create(name, layer);
         if (!LAYERS.add(entityModelLayer)) {
-            throw new IllegalStateException("Duplicate registration for " + String.valueOf(entityModelLayer));
+            throw new IllegalStateException("Duplicate registration for" + entityModelLayer);
         } else {
             return entityModelLayer;
         }
@@ -26,6 +26,10 @@ public class DroneModelLayer {
 
     private static EntityModelLayer registerMain(String name) {
         return register(name, "main");
+    }
+
+    private DroneModelLayer() {
+        // Prevent instantiation
     }
 }
 

@@ -15,10 +15,16 @@ public class ModBlockEntities {
             register("counter", ComputerBlockEntity::new, ModBlocks.COMPUTER);
 
     public static void initialize() {
+        // This method is called to ensure the block entities are registered
+        // You can add any additional initialization logic here if needed
     }
 
     private static <T extends BlockEntity> BlockEntityType<T> register(String name, FabricBlockEntityTypeBuilder.Factory<? extends T> entityFactory, Block... blocks) {
         Identifier id = Identifier.of(NarcMod.MOD_ID, name);
         return Registry.register(Registries.BLOCK_ENTITY_TYPE, id, FabricBlockEntityTypeBuilder.<T>create(entityFactory, blocks).build());
+    }
+
+    private ModBlockEntities() {
+        // Private constructor to prevent instantiation
     }
 }

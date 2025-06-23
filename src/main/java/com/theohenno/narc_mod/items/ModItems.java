@@ -55,4 +55,7 @@ public class ModItems {
         return item;
     }
 
+    private ModItems() {
+        // Private constructor to prevent instantiation
+    }
 }
