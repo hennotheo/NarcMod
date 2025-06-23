@@ -1,6 +1,6 @@
 {
 	"schemaVersion": 1,
-	"id": "narcmod",
+	"id": "narc_mod",
 	"version": "${version}",
 	"name": "NarcMod",
 	"description": "This is an example description! Tell everyone what your mod is about!",
@@ -12,26 +12,19 @@
 		"sources": "https://github.com/FabricMC/fabric-example-mod"
 	},
 	"license": "MIT",
-	"icon": "assets/narcmod/icon.png",
+	"icon": "assets/narc_mod/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"fabric-datagen": [
-			"com.theohenno.narcmod.DataGenerator"
+          "com.theohenno.narc_mod.data.DataGenerator"
 		],
 		"main": [
-			"com.theohenno.narcmod.NarcMod"
+			"com.theohenno.narc_mod.NarcMod"
 		],
 		"client": [
-			"com.theohenno.narcmod.NarcModClient"
+			"com.theohenno.narc_mod.NarcModClient"
 		]
 	},
-	"mixins": [
-		"narcmod.mixins.json",
-		{
-			"config": "narcmod.client.mixins.json",
-			"environment": "client"
-		}
-	],
 	"depends": {
 		"fabricloader": ">=0.16.14",
 		"minecraft": "~1.21.5",

@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "narc_mod:block/computer"
+    }
+  }
+}
