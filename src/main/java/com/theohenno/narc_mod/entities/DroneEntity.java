@@ -34,7 +34,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     public static DefaultAttributeContainer.Builder createDroneAttributes() {
         return AnimalEntity.createAnimalAttributes()
-                .add(EntityAttributes.MAX_HEALTH, 10.0)
+                .add(EntityAttributes.MAX_HEALTH, 20.0)
                 .add(EntityAttributes.MOVEMENT_SPEED, 0.25);
     }
 

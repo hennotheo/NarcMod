@@ -27,9 +27,7 @@ public class ModItems {
 
     public static final Item DRONE_SPAWN_EGG = register(
             "drone",
-            settings -> new SpawnEggItem(
-                    ModEntities.DRONE,
-                    settings),
+            settings -> new SpawnEggItem(ModEntities.DRONE, settings),
             new Item.Settings()
                     .maxCount(64)
                     .fireproof()
@@ -48,13 +46,10 @@ public class ModItems {
     }
 
     public static Item register(String name, Function<Item.Settings, Item> itemFactory, Item.Settings settings) {
-        // Create the item key.
         RegistryKey<Item> itemKey = RegistryKey.of(RegistryKeys.ITEM, Identifier.of(NarcMod.MOD_ID, name));
 
-        // Create the item instance.
         Item item = itemFactory.apply(settings.registryKey(itemKey));
 
-        // Register the item.
         Registry.register(Registries.ITEM, itemKey, item);
 
         return item;
