@@ -1,5 +1,6 @@
 package com.theohenno.narc_mod.entities;
 
+import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.goals.MoveToPointGoal;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
 import net.minecraft.entity.EntityType;
@@ -20,9 +21,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory {
     public static final String ID = "drone";
 
+    private float millisecondsSinceLastPing = 0.0f;
     private final SimpleInventory inventory = new SimpleInventory(27);
 
     public DroneEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
@@ -54,30 +58,68 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
+        goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
     }
 
     @Override
     public SimpleInventory getInventory() {
-        return this.inventory;
+        return inventory;
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
-        this.writeInventory(nbt, this.getRegistryManager());
+        writeInventory(nbt, getRegistryManager());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
 
-        this.readInventory(nbt, this.getRegistryManager());
+        readInventory(nbt, getRegistryManager());
     }
 
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new DroneScreenHandler(syncId, playerInventory, this.inventory);
+        return new DroneScreenHandler(syncId, playerInventory, inventory);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if(getWorld().isClient) {
+            return;
+        }
+
+        millisecondsSinceLastPing += Objects.requireNonNull(getWorld().getServer()).getTickManager().getMillisPerTick();
+
+        if (millisecondsSinceLastPing >= 2000.0f) {
+            millisecondsSinceLastPing = 0.0f;
+            ping();
+        }
+    }
+
+    protected void sendMessage() {
+        if (getWorld().isClient) {
+            return;
+        }
+
+        getWorld()
+                .getEntitiesByClass(DroneEntity.class, getBoundingBox().expand(20), entity -> entity != this)
+                .forEach(entity -> {
+                    if (entity instanceof DroneEntity drone) {
+                        drone.receiveMessage("Ping: " + getUuid());
+                    }
+                });
+    }
+
+    protected void receiveMessage(String message) {
+        NarcMod.LOGGER.info("Drone receive message: {}", message);
+    }
+
+    protected void ping() {
+        NarcMod.LOGGER.info("Drone ping at position: {}", getPos());
     }
 }
