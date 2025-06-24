@@ -3,6 +3,8 @@ package com.theohenno.narc_mod.entities;
 import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.goals.MoveToPointGoal;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
+import com.theohenno.narc_mod.netwokring.NetworkMessage;
+import com.theohenno.narc_mod.netwokring.NetworkMessageType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -89,19 +91,19 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
     public void tick() {
         super.tick();
 
-        if(getWorld().isClient) {
+        if (getWorld().isClient) {
             return;
         }
 
         millisecondsSinceLastPing += Objects.requireNonNull(getWorld().getServer()).getTickManager().getMillisPerTick();
 
-        if (millisecondsSinceLastPing >= 2000.0f) {
+        if (millisecondsSinceLastPing >= 15000.0f) {
             millisecondsSinceLastPing = 0.0f;
             ping();
         }
     }
 
-    protected void sendMessage() {
+    protected void sendMessage(NetworkMessage message) {
         if (getWorld().isClient) {
             return;
         }
@@ -110,16 +112,25 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
                 .getEntitiesByClass(DroneEntity.class, getBoundingBox().expand(20), entity -> entity != this)
                 .forEach(entity -> {
                     if (entity instanceof DroneEntity drone) {
-                        drone.receiveMessage("Ping: " + getUuid());
+                        drone.receiveMessage(message);
                     }
                 });
     }
 
-    protected void receiveMessage(String message) {
-        NarcMod.LOGGER.info("Drone receive message: {}", message);
+    protected void receiveMessage(NetworkMessage message) {
+        NarcMod.LOGGER.info("------------------------");
+        NarcMod.LOGGER.info("Drone receive message from : {}", message.Sender);
+        NarcMod.LOGGER.info("Message Header : {}", message.Header);
+        NarcMod.LOGGER.info("Message Body: {}", message.Body);
     }
 
     protected void ping() {
-        NarcMod.LOGGER.info("Drone ping at position: {}", getPos());
+        sendMessage(new NetworkMessage(
+                NetworkMessageType.PING,
+                0,
+                this,
+                "Ping",
+                "Drone ping at position: " + getPos())
+        );
     }
 }
