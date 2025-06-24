@@ -1,4 +1,4 @@
-package com.theohenno.narc_mod.netwokring;
+package com.theohenno.narc_mod.networking;
 
 import com.theohenno.narc_mod.entities.DroneEntity;
 

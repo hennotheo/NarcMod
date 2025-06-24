@@ -3,8 +3,10 @@ package com.theohenno.narc_mod.entities;
 import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.goals.MoveToPointGoal;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
-import com.theohenno.narc_mod.netwokring.NetworkMessage;
-import com.theohenno.narc_mod.netwokring.NetworkMessageType;
+import com.theohenno.narc_mod.networking.NetworkMessage;
+import com.theohenno.narc_mod.networking.NetworkMessageEmitter;
+import com.theohenno.narc_mod.networking.NetworkMessageReceiver;
+import com.theohenno.narc_mod.networking.NetworkMessageType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -25,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory {
+public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory, NetworkMessageEmitter, NetworkMessageReceiver {
     public static final String ID = "drone";
 
     private float millisecondsSinceLastPing = 0.0f;
@@ -103,27 +105,6 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
         }
     }
 
-    protected void sendMessage(NetworkMessage message) {
-        if (getWorld().isClient) {
-            return;
-        }
-
-        getWorld()
-                .getEntitiesByClass(DroneEntity.class, getBoundingBox().expand(20), entity -> entity != this)
-                .forEach(entity -> {
-                    if (entity instanceof DroneEntity drone) {
-                        drone.receiveMessage(message);
-                    }
-                });
-    }
-
-    protected void receiveMessage(NetworkMessage message) {
-        NarcMod.LOGGER.info("------------------------");
-        NarcMod.LOGGER.info("Drone receive message from : {}", message.Sender);
-        NarcMod.LOGGER.info("Message Header : {}", message.Header);
-        NarcMod.LOGGER.info("Message Body: {}", message.Body);
-    }
-
     protected void ping() {
         sendMessage(new NetworkMessage(
                 NetworkMessageType.PING,
@@ -132,5 +113,18 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
                 "Ping",
                 "Drone ping at position: " + getPos())
         );
+    }
+
+    @Override
+    public void receiveNetworkMessage(NetworkMessage message) {
+        NarcMod.LOGGER.info("------------------------");
+        NarcMod.LOGGER.info("Drone receive message from : {}", message.Sender);
+        NarcMod.LOGGER.info("Message Header : {}", message.Header);
+        NarcMod.LOGGER.info("Message Body: {}", message.Body);
+    }
+
+    @Override
+    public boolean canReceive() {
+        return true;
     }
 }
