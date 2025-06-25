@@ -1,7 +1,12 @@
 package com.theohenno.narc_mod.entities;
 
+import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.goals.MoveToPointGoal;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
+import com.theohenno.narc_mod.networking.NetworkMessage;
+import com.theohenno.narc_mod.networking.NetworkMessageEmitter;
+import com.theohenno.narc_mod.networking.NetworkMessageReceiver;
+import com.theohenno.narc_mod.networking.NetworkMessageType;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -20,9 +25,12 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory {
+import java.util.Objects;
+
+public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory, NetworkMessageEmitter, NetworkMessageReceiver {
     public static final String ID = "drone";
 
+    private float millisecondsSinceLastPing = 0.0f;
     private final SimpleInventory inventory = new SimpleInventory(27);
 
     public DroneEntity(EntityType<? extends PathAwareEntity> entityType, World world) {
@@ -54,30 +62,69 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
+        goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
     }
 
     @Override
     public SimpleInventory getInventory() {
-        return this.inventory;
+        return inventory;
     }
 
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
 
-        this.writeInventory(nbt, this.getRegistryManager());
+        writeInventory(nbt, getRegistryManager());
     }
 
     @Override
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
 
-        this.readInventory(nbt, this.getRegistryManager());
+        readInventory(nbt, getRegistryManager());
     }
 
     @Override
     public @Nullable ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
-        return new DroneScreenHandler(syncId, playerInventory, this.inventory);
+        return new DroneScreenHandler(syncId, playerInventory, inventory);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (getWorld().isClient) {
+            return;
+        }
+
+        millisecondsSinceLastPing += Objects.requireNonNull(getWorld().getServer()).getTickManager().getMillisPerTick();
+
+        if (millisecondsSinceLastPing >= 15000.0f) {
+            millisecondsSinceLastPing = 0.0f;
+            ping();
+        }
+    }
+
+    protected void ping() {
+        sendMessage(new NetworkMessage(
+                NetworkMessageType.PING,
+                0,
+                this,
+                "Ping",
+                "Drone ping at position: " + getPos())
+        );
+    }
+
+    @Override
+    public void receiveNetworkMessage(NetworkMessage message) {
+        NarcMod.LOGGER.info("------------------------");
+        NarcMod.LOGGER.info("Drone receive message from : {}", message.Sender);
+        NarcMod.LOGGER.info("Message Header : {}", message.Header);
+        NarcMod.LOGGER.info("Message Body: {}", message.Body);
+    }
+
+    @Override
+    public boolean canReceive() {
+        return true;
     }
 }
