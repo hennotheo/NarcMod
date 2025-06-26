@@ -1,5 +1,7 @@
 package com.theohenno.narc_mod.networking;
 
+import com.theohenno.narc_mod.entities.goals.SoftwareTask;
+
 public class NetworkMessage {
     public NetworkMessageType Type;
     public int ChannelId;

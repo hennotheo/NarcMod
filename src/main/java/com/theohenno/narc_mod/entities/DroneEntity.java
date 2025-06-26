@@ -1,14 +1,13 @@
 package com.theohenno.narc_mod.entities;
 
 import com.theohenno.narc_mod.NarcMod;
-import com.theohenno.narc_mod.entities.goals.MoveToPointGoal;
+import com.theohenno.narc_mod.entities.goals.SoftwareTask;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
-import com.theohenno.narc_mod.networking.NetworkMessage;
-import com.theohenno.narc_mod.networking.NetworkMessageEmitter;
-import com.theohenno.narc_mod.networking.NetworkMessageReceiver;
-import com.theohenno.narc_mod.networking.NetworkMessageType;
+import com.theohenno.narc_mod.items.ModItems;
+import com.theohenno.narc_mod.networking.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
+import net.minecraft.entity.ai.goal.GoalSelector;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -53,6 +52,10 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
             return result;
         }
 
+        if (player.getStackInHand(hand).isOf(ModItems.ADMIN_TEST_ITEM)) {
+            return ActionResult.PASS;
+        }
+
         if (!getWorld().isClient) {
             player.openHandledScreen(this);
         }
@@ -62,7 +65,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     protected void initGoals() {
-        goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
+//        goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
     }
 
     @Override
@@ -117,14 +120,30 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     public void receiveNetworkMessage(NetworkMessage message) {
-        NarcMod.LOGGER.info("------------------------");
-        NarcMod.LOGGER.info("Drone receive message from : {}", message.Sender);
-        NarcMod.LOGGER.info("Message Header : {}", message.Header);
-        NarcMod.LOGGER.info("Message Body: {}", message.Body);
+        if (message.Type == NetworkMessageType.PING) {
+            NarcMod.LOGGER.info("Drone received ping from: {}", message.Emitter);
+            return;
+        }
+
+        if (message.Type == NetworkMessageType.ORDER) {
+            if (message instanceof NetworkTaskMessage taskMessage) {
+                setMaxPriorityToTask(taskMessage.Task);
+                return;
+            }
+
+            NarcMod.LOGGER.error("Received ORDER message but it's not a NetworkTaskMessage: {}", message);
+        }
     }
 
     @Override
     public boolean canReceive() {
         return true;
+    }
+
+    private void setMaxPriorityToTask(SoftwareTask task) {
+        goalSelector.getGoals().removeIf(goal -> goal.getPriority() == 0);
+
+        task.Mob = this;
+        goalSelector.add(0, task);
     }
 }

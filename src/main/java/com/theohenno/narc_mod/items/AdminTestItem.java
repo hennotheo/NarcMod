@@ -1,11 +1,7 @@
 package com.theohenno.narc_mod.items;
 
-import com.theohenno.narc_mod.NarcMod;
-import com.theohenno.narc_mod.entities.DroneEntity;
-import com.theohenno.narc_mod.networking.NetworkMessage;
-import com.theohenno.narc_mod.networking.NetworkMessageEmitter;
-import com.theohenno.narc_mod.networking.NetworkMessageReceiver;
-import com.theohenno.narc_mod.networking.NetworkMessageType;
+import com.theohenno.narc_mod.entities.goals.MoveToTask;
+import com.theohenno.narc_mod.networking.*;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
@@ -29,12 +25,10 @@ public class AdminTestItem extends Item implements NetworkMessageEmitter {
         if (networkMessageReceiver != null) {
             currentWorld = context.getWorld();
             sendMessage(
-                    new NetworkMessage(
-                            NetworkMessageType.ORDER,
+                    new NetworkTaskMessage(
+                            new MoveToTask(context.getHitPos(), 0.5),
                             0,
-                            this,
-                            "GOTO " + context.getHitPos().toString(),
-                            "BODY"),
+                            this),
                     networkMessageReceiver);
             return ActionResult.SUCCESS;
         }

@@ -4,15 +4,9 @@ import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.PathAwareEntity;
 
 public abstract class SoftwareTask extends Goal {
-    private final PathAwareEntity mob;
+    public PathAwareEntity Mob;
 
-    protected SoftwareTask(PathAwareEntity mob) {
+    protected SoftwareTask() {
         super();
-
-        this.mob = mob;
-    }
-
-    protected PathAwareEntity getMob() {
-        return mob;
     }
 }
