@@ -33,6 +33,8 @@ public class ModItems {
                     .fireproof()
     );
 
+    public static final Item ADMIN_TEST_ITEM = register("admin_test_item", AdminTestItem::new, new Item.Settings());
+
     public static final Item SUSPICIOUS_SUBSTANCE = register("suspicious_substance", Item::new, new Item.Settings());
 
     public static void initialize() {
@@ -41,6 +43,7 @@ public class ModItems {
         ItemGroupEvents.modifyEntriesEvent(NARC_MOD_ITEM_GROUP_KEY).register(itemGroup -> {
             itemGroup.add(ModItems.SUSPICIOUS_SUBSTANCE);
             itemGroup.add(ModItems.DRONE_SPAWN_EGG);
+            itemGroup.add(ModItems.ADMIN_TEST_ITEM);
             itemGroup.add(ModBlocks.COMPUTER);
         });
     }

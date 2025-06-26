@@ -1,16 +1,15 @@
 package com.theohenno.narc_mod.entities.goals;
 
-import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.util.math.Vec3d;
 
-public class MoveToPointGoal extends Goal {
-    private final PathAwareEntity mob;
+public class MoveToTask extends SoftwareTask {
     private final Vec3d target;
     private final double speed;
 
-    public MoveToPointGoal(PathAwareEntity mob, Vec3d target, double speed) {
-        this.mob = mob;
+    public MoveToTask(PathAwareEntity mob, Vec3d target, double speed) {
+        super(mob);
+
         this.target = target;
         this.speed = speed;
     }
@@ -22,11 +21,11 @@ public class MoveToPointGoal extends Goal {
 
     @Override
     public void start() {
-        mob.getNavigation().startMovingTo(target.x, target.y, target.z, speed);
+        getMob().getNavigation().startMovingTo(target.x, target.y, target.z, speed);
     }
 
     @Override
     public boolean shouldContinue() {
-        return !mob.getNavigation().isIdle();
+        return !getMob().getNavigation().isIdle();
     }
 }

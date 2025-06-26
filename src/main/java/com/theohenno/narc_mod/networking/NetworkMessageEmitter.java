@@ -19,6 +19,14 @@ public interface NetworkMessageEmitter {
                 .forEach(receiver -> receiver.receiveNetworkMessage(message));
     }
 
+    default void sendMessage(NetworkMessage message , NetworkMessageReceiver receiver) {
+        if (getWorld().isClient) {
+            return;
+        }
+
+        receiver.receiveNetworkMessage(message);
+    }
+
     World getWorld();
 
     Box getBoundingBox();

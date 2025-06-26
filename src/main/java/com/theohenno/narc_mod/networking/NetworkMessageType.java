@@ -1,5 +1,6 @@
 package com.theohenno.narc_mod.networking;
 
 public enum NetworkMessageType {
-    PING
+    PING,
+    ORDER
 }
