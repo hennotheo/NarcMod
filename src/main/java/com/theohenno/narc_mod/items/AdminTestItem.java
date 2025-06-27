@@ -26,7 +26,7 @@ public class AdminTestItem extends Item implements NetworkMessageEmitter {
             currentWorld = context.getWorld();
             sendMessage(
                     new NetworkTaskMessage(
-                            new MoveToTask(context.getHitPos(), 0.5),
+                            new MoveToTask(context.getHitPos()),
                             0,
                             this),
                     networkMessageReceiver);

@@ -2,12 +2,13 @@ package com.theohenno.narc_mod.entities;
 
 import com.theohenno.narc_mod.NarcMod;
 import com.theohenno.narc_mod.entities.goals.SoftwareTask;
+import com.theohenno.narc_mod.entities.goals.SoftwareTasksGoal;
 import com.theohenno.narc_mod.entities.screen_handler.DroneScreenHandler;
 import com.theohenno.narc_mod.items.ModItems;
 import com.theohenno.narc_mod.networking.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.InventoryOwner;
-import net.minecraft.entity.ai.goal.GoalSelector;
+import net.minecraft.entity.ai.goal.PrioritizedGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.mob.PathAwareEntity;
@@ -18,6 +19,7 @@ import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.Vec3d;
@@ -25,6 +27,7 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class DroneEntity extends PathAwareEntity implements InventoryOwner, NamedScreenHandlerFactory, NetworkMessageEmitter, NetworkMessageReceiver {
     public static final String ID = "drone";
@@ -65,7 +68,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     protected void initGoals() {
-//        goalSelector.add(0, new MoveToPointGoal(this, new Vec3d(0, 0, 0), 1.0));
+        goalSelector.add(0, new SoftwareTasksGoal(this));
     }
 
     @Override
@@ -120,6 +123,10 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
     @Override
     public void receiveNetworkMessage(NetworkMessage message) {
+        if (!(getWorld() instanceof ServerWorld)) {
+            return;
+        }
+
         if (message.Type == NetworkMessageType.PING) {
             NarcMod.LOGGER.info("Drone received ping from: {}", message.Emitter);
             return;
@@ -127,7 +134,7 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
 
         if (message.Type == NetworkMessageType.ORDER) {
             if (message instanceof NetworkTaskMessage taskMessage) {
-                setMaxPriorityToTask(taskMessage.Task);
+                addTask(taskMessage.Task);
                 return;
             }
 
@@ -140,10 +147,18 @@ public class DroneEntity extends PathAwareEntity implements InventoryOwner, Name
         return true;
     }
 
-    private void setMaxPriorityToTask(SoftwareTask task) {
-        goalSelector.getGoals().removeIf(goal -> goal.getPriority() == 0);
+    private void addTask(SoftwareTask task) {
+        Optional<PrioritizedGoal> goalHandler = goalSelector.getGoals().stream()
+                .filter(goal -> goal.getGoal() instanceof SoftwareTasksGoal)
+                .findAny();
 
-        task.Mob = this;
-        goalSelector.add(0, task);
+        if (goalHandler.isEmpty())
+            return;
+
+        if (!(goalHandler.get().getGoal() instanceof SoftwareTasksGoal softwareTasksGoal))
+            return;
+
+        task.Entity = this;
+        softwareTasksGoal.addTask(task);
     }
 }
