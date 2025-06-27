@@ -21,7 +21,7 @@ public class MoveToTask extends SoftwareTask {
             return true;
         }
 
-        boolean isAtTarget = targetPos.isWithinDistance(target, 0.1);
+        boolean isAtTarget = targetPos.isWithinDistance(target, 1);
         boolean isIdle = Entity.getNavigation().isIdle();
 
         return isAtTarget && isIdle;

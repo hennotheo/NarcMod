@@ -30,7 +30,7 @@ public class SoftwareTasksGoal extends Goal {
         tasks.add(task);
 
         if (currentTask == null) {
-            setNewTaskAsCurrent();
+            setNextTaskAsCurrent();
         }
     }
 
@@ -46,13 +46,13 @@ public class SoftwareTasksGoal extends Goal {
 
     @Override
     public void start() {
-        setNewTaskAsCurrent();
+        setNextTaskAsCurrent();
     }
 
     @Override
     public void tick() {
         if (currentTask == null) {
-            setNewTaskAsCurrent();
+            setNextTaskAsCurrent();
             return;
         }
 
@@ -65,10 +65,10 @@ public class SoftwareTasksGoal extends Goal {
 
     private void finishCurrentTask() {
         currentTask.onFinish();
-        setNewTaskAsCurrent();
+        setNextTaskAsCurrent();
     }
 
-    private void setNewTaskAsCurrent() {
+    private void setNextTaskAsCurrent() {
         currentTask = tasks.poll();
         if (currentTask != null) {
             currentTask.Entity = entity;
